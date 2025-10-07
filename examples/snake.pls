@@ -127,7 +127,7 @@ global 1 -> random/seed
   .
 
 *(game/cell/render! pos thickness color):
-  1 thickness - game/cell-size *
+  1 thickness - game/cell-size * 2.0 /
     -> padding
 
   pos game/cell-size (vec2/mul)
@@ -141,7 +141,7 @@ global 1 -> random/seed
   .
 
 *(game/path/render! path thickness color):
-  1 thickness - game/cell-size *
+  1 thickness - game/cell-size * 2.0 /
     <-> pad-x
      -> pad-y
   
