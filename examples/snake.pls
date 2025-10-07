@@ -370,16 +370,19 @@ global 1 -> random/seed
       (clamp) -> snake/thickness
   end
 
-  raylib/key/up (*raylib/is-key-pressed?) if:
-    snake/move/time snake/move/time/step -
-    snake/move/time/min snake/move/time/max
-      (clamp) -> snake/move/time
-  end
+  raylib/key/up   (*raylib/is-key-pressed?) -> speed-up?
+  raylib/key/down (*raylib/is-key-pressed?) -> slow-down?
 
-  raylib/key/down (*raylib/is-key-pressed?) if:
-    snake/move/time snake/move/time/step +
+  speed-up? slow-down? | if:
+    snake/move/timer snake/move/time /
+      -> movement-progress
+
+    snake/move/time snake/move/time/step speed-up? if: - else: + end
     snake/move/time/min snake/move/time/max
       (clamp) -> snake/move/time
+
+    snake/move/time movement-progress *
+      -> snake/move/timer
   end
   .
 
