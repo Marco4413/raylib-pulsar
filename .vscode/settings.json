@@ -1,0 +1,11 @@
+{
+    "pulsarLanguage.lsp.options.includePaths": [
+        "resources/include"
+    ],
+    "C_Cpp.default.cStandard": "c99",
+    "C_Cpp.default.includePath": [
+        "libs/cpulsar/include",
+        "libs/raylib/include",
+        "include",
+    ]
+}

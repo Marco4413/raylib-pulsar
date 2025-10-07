@@ -1,0 +1,5 @@
+build
+
+# Ignore downloaded prebuilt binaries
+libs/*.zip
+libs/*.tar.gz
