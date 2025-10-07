@@ -1,8 +1,31 @@
 #include "raylib.pls"
 
+/*
+KEYBINDS:
+
+W - Move Up
+S - Move Down
+A - Move Left
+D - Move Right
+
+<UP>   - Increase Game Speed
+<DOWN> - Decrease Game Speed
+<RIGHT> - Increase Stroke Thickness
+<LEFT>  - Decrease Stroke Thickness
+
+<SPACE> - Reset Game
+
+<TAB> - Toggle FPS
+G - Toggle Grid
+Q - Toggle Pause (game is paused on start)
+*/
+
 global 0 -> snake/dead?
-global 0.5             -> snake/move/time
+global 0.4             -> snake/move/time
 global snake/move/time -> snake/move/timer
+
+/* --- THESE VALUES SHOULD ALSO BE UPDATED WITHIN (snake/reset!) --- */
+
 // Assign to snake/next-direction if you want to change direction
 // snake/direction is used for animations
 global [0, 1]               -> snake/next-direction
@@ -12,14 +35,23 @@ global snake/next-direction -> snake/direction
 global []     -> snake/tail
 global [0, 0] -> snake/head
 global 1      -> snake/growth
-
 global [3, 3] -> snake/food
 
-global const 0.90 -> snake/thickness
+/* --- END --- */
+
+global 0.6 -> snake/thickness
 global const 0x585858FF -> snake/dead/color
 global const 0x00FF00FF -> snake/tail/color
 global const 0x00AA00FF -> snake/head/color
 global const 0xAA0000FF -> snake/food/color
+
+global const 0.1 -> snake/thickness/step
+global const 0.1 -> snake/thickness/min
+global const 1.0 -> snake/thickness/max
+
+global const 0.1 -> snake/move/time/step
+global const 0.1 -> snake/move/time/min
+global const 1.0 -> snake/move/time/max
 
 global 1 -> game/show-fps?
 global 1 -> game/show-grid?
@@ -65,6 +97,12 @@ global 1 -> random/seed
   b a -
     t *
     a +
+  .
+
+*(clamp a min max) -> 1:
+  a if < min: min .
+  a if > max: max .
+  a
   .
 
 *(vec2/sum v1 v2) -> 1:
@@ -170,6 +208,18 @@ global 1 -> random/seed
 
 *(abs 1) -> 1:
   (!dup) if < 0: -1 * .
+  .
+
+*(snake/reset!):
+  0 -> snake/dead?
+  snake/move/time -> snake/move/timer
+  [0, 1]
+    <-> snake/next-direction
+     -> snake/direction
+  []     -> snake/tail
+  [0, 0] -> snake/head
+  1      -> snake/growth
+  [3, 3] -> snake/food
   .
 
 *(snake/food/regen!):
@@ -284,6 +334,13 @@ global 1 -> random/seed
 
   .
 
+*(game/restart!):
+  1 -> random/seed
+  1 -> game/paused?
+  0 -> game/over?
+  (snake/reset!)
+  .
+
 *(game/handle-input!):
   snake/next-direction -> desired-next-direction
   raylib/key/w (*raylib/is-key-pressed?) if: [ 0, -1] -> desired-next-direction end
@@ -298,6 +355,32 @@ global 1 -> random/seed
   raylib/key/tab (*raylib/is-key-pressed?) if: game/show-fps?  (toggle) -> game/show-fps?  end
   raylib/key/g   (*raylib/is-key-pressed?) if: game/show-grid? (toggle) -> game/show-grid? end
   raylib/key/q   (*raylib/is-key-pressed?) if: game/paused?    (toggle) -> game/paused?    end
+
+  raylib/key/space (*raylib/is-key-pressed?) if: (game/restart!) end
+
+  raylib/key/right (*raylib/is-key-pressed?) if:
+    snake/thickness snake/thickness/step +
+    snake/thickness/min snake/thickness/max
+      (clamp) -> snake/thickness
+  end
+
+  raylib/key/left (*raylib/is-key-pressed?) if:
+    snake/thickness snake/thickness/step -
+    snake/thickness/min snake/thickness/max
+      (clamp) -> snake/thickness
+  end
+
+  raylib/key/up (*raylib/is-key-pressed?) if:
+    snake/move/time snake/move/time/step -
+    snake/move/time/min snake/move/time/max
+      (clamp) -> snake/move/time
+  end
+
+  raylib/key/down (*raylib/is-key-pressed?) if:
+    snake/move/time snake/move/time/step +
+    snake/move/time/min snake/move/time/max
+      (clamp) -> snake/move/time
+  end
   .
 
 *(game/update!):
