@@ -15,6 +15,7 @@ CPulsar_RuntimeState Raylib_GetScreenHeight(CPulsar_ExecutionContext eContext, v
 CPulsar_RuntimeState Raylib_ClearBackground(CPulsar_ExecutionContext eContext, void* args);
 CPulsar_RuntimeState Raylib_DrawRectangle(CPulsar_ExecutionContext eContext, void* args);
 CPulsar_RuntimeState Raylib_DrawText(CPulsar_ExecutionContext eContext, void* args);
+CPulsar_RuntimeState Raylib_MeasureText(CPulsar_ExecutionContext eContext, void* args);
 CPulsar_RuntimeState Raylib_EndDrawing(CPulsar_ExecutionContext eContext, void* args);
 
 CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext eContext, void* args);

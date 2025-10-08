@@ -48,6 +48,8 @@ Raylib_Bindings Raylib_GetBindings()
             Raylib_DrawRectangle },
         { { .Name = "raylib/draw-text!",           .Arity = 5, .Returns = 0 },
             Raylib_DrawText },
+        { { .Name = "raylib/measure-text",         .Arity = 2, .Returns = 1 },
+            Raylib_MeasureText },
         { { .Name = "raylib/end-drawing!",         .Arity = 0, .Returns = 0 },
             Raylib_EndDrawing },
         { { .Name = "raylib/is-key-pressed?",      .Arity = 1, .Returns = 1 },
@@ -210,6 +212,27 @@ CPulsar_RuntimeState Raylib_DrawText(CPulsar_ExecutionContext eContext, void* ar
     GET_INTEGER_ARG(color, argIdx++);
 
     DrawText(text, (int)x, (int)y, (int)fontSize, ColorFromHex(color));
+
+    return CPulsar_RuntimeState_OK;
+}
+
+CPulsar_RuntimeState Raylib_MeasureText(CPulsar_ExecutionContext eContext, void* args)
+{
+    (void)args;
+    CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Stack  stack  = CPulsar_Frame_GetStack(frame);
+
+    const char* text = NULL;
+    int64_t fontSize;
+
+    size_t argIdx = 0;
+    GET_STRING_ARG(text, argIdx++);
+    GET_INTEGER_NUMBER_ARG(fontSize, argIdx++);
+
+    CPulsar_Value_SetInteger(
+            CPulsar_Stack_PushEmpty(stack),
+            MeasureText(text, fontSize));
 
     return CPulsar_RuntimeState_OK;
 }

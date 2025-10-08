@@ -10,6 +10,7 @@
 *(*raylib/clear-background! color).
 *(*raylib/draw-rectangle! x y w h color).
 *(*raylib/draw-text! text x y font-size color).
+*(*raylib/measure-text text font-size) -> 1.
 *(*raylib/end-drawing!).
 
 *(*raylib/is-key-pressed? key) -> 1.
