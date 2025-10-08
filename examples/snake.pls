@@ -60,6 +60,7 @@ global 0 -> game/over?
 
 global const 0x181818FF -> game/background-color1
 global const 0x383838FF -> game/background-color2
+global const 0x181818CC -> game/overlay-color
 global const 100 -> game/cell-size
 
 global const 32 -> game/font-size
@@ -75,6 +76,28 @@ global 1 -> random/seed
     (!dup)  7 >> ^
     (!dup) 17 << ^
     <-> random/seed
+  .
+
+*(split-lines text) -> 1:
+  <- text (!length) local text text-length:
+    0 -> line-start-idx
+    0 -> idx
+    [] while idx < text-length:
+      <- text idx (!index) if '\n':
+        line-start-idx idx (!substr)
+          (!swap) -> text
+          (!append)
+        idx 1 + <-> idx -> line-start-idx
+      else:
+        -> text
+        idx 1 + -> idx
+      end
+    end
+
+    <- text line-start-idx idx (!substr)
+      (!swap) -> text
+      (!append)
+  end
   .
 
 *(itos n) -> 1:
@@ -204,6 +227,31 @@ global 1 -> random/seed
         end
       this-pos -> last-pos
     end
+  .
+
+*(game/overlay/render! text):
+  <- text (split-lines) (!length) local lines lines-length:
+    (*raylib/get-screen-height)
+    game/font-size lines-length *
+      - 2.0 / -> text-y
+
+    0 0 (*raylib/get-screen-width) (*raylib/get-screen-height)
+      game/overlay-color (*raylib/draw-rectangle!)
+
+    <- lines while: (!empty?) if: break
+      (!head) -> text
+
+      (*raylib/get-screen-width)
+      text game/font-size
+        (*raylib/measure-text)
+        - 2.0 / -> text-x
+
+      <- text text-x text-y
+        game/font-size game/font-color (*raylib/draw-text!)
+
+      text-y game/font-size + -> text-y
+    end
+  end
   .
 
 *(abs 1) -> 1:
@@ -424,6 +472,14 @@ global 1 -> random/seed
   end
 
   (snake/render!)
+
+  if game/over? != 0:
+      "Game Over"
+    \n"Press <SPACE> to restart." (game/overlay/render!)
+  else if game/paused? != 0:
+      "Game Paused"
+    \n"Press Q to toggle." (game/overlay/render!)
+  end
 
   game/show-fps? if:
     "FPS: " 1 (*raylib/get-frame-time) / (!floor) (itos) (!append)
