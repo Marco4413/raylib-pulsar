@@ -13,16 +13,6 @@
 #define GET_INTEGER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsInteger, CPulsar_Value_AsInteger, (outVar), (argIdx))
 #define GET_INTEGER_NUMBER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsNumber, CPulsar_Value_AsIntegerNumber, (outVar), (argIdx))
 
-static Color ColorFromHex(int64_t hex)
-{
-    return (Color){
-        .r = (hex & 0xFF000000) >> 24,
-        .g = (hex & 0x00FF0000) >> 16,
-        .b = (hex & 0x0000FF00) >>  8,
-        .a = (hex & 0x000000FF),
-    };
-}
-
 Raylib_Bindings Raylib_GetBindings()
 {
     static const Raylib_Binding BINDINGS[] = {
@@ -170,7 +160,7 @@ CPulsar_RuntimeState Raylib_ClearBackground(CPulsar_ExecutionContext eContext, v
     int64_t color;
     GET_INTEGER_ARG(color, 0);
 
-    ClearBackground(ColorFromHex(color));
+    ClearBackground(GetColor((unsigned int)color));
 
     return CPulsar_RuntimeState_OK;
 }
@@ -190,7 +180,7 @@ CPulsar_RuntimeState Raylib_DrawRectangle(CPulsar_ExecutionContext eContext, voi
     GET_INTEGER_NUMBER_ARG(h, argIdx++);
     GET_INTEGER_ARG(color, argIdx++);
 
-    DrawRectangle((int)x, (int)y, (int)w, (int)h, ColorFromHex(color));
+    DrawRectangle((int)x, (int)y, (int)w, (int)h, GetColor((unsigned int)color));
 
     return CPulsar_RuntimeState_OK;
 }
@@ -211,7 +201,7 @@ CPulsar_RuntimeState Raylib_DrawText(CPulsar_ExecutionContext eContext, void* ar
     GET_INTEGER_NUMBER_ARG(fontSize, argIdx++);
     GET_INTEGER_ARG(color, argIdx++);
 
-    DrawText(text, (int)x, (int)y, (int)fontSize, ColorFromHex(color));
+    DrawText(text, (int)x, (int)y, (int)fontSize, GetColor((unsigned int)color));
 
     return CPulsar_RuntimeState_OK;
 }
