@@ -13,6 +13,10 @@
 #define GET_INTEGER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsInteger, CPulsar_Value_AsInteger, (outVar), (argIdx))
 #define GET_INTEGER_NUMBER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsNumber, CPulsar_Value_AsIntegerNumber, (outVar), (argIdx))
 
+int   _CPulsar_Value_IsColor(const CPulsar_Value self);
+Color _CPulsar_Value_AsColor(const CPulsar_Value self);
+#define GET_COLOR_ARG(outVar, argIdx) GET_ARG(_CPulsar_Value_IsColor, _CPulsar_Value_AsColor, (outVar), (argIdx))
+
 Raylib_Bindings Raylib_GetBindings()
 {
     static const Raylib_Binding BINDINGS[] = {
@@ -157,10 +161,10 @@ CPulsar_RuntimeState Raylib_ClearBackground(CPulsar_ExecutionContext eContext, v
     CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
     CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
 
-    int64_t color;
-    GET_INTEGER_ARG(color, 0);
+    Color color;
+    GET_COLOR_ARG(color, 0);
 
-    ClearBackground(GetColor((unsigned int)color));
+    ClearBackground(color);
 
     return CPulsar_RuntimeState_OK;
 }
@@ -171,16 +175,17 @@ CPulsar_RuntimeState Raylib_DrawRectangle(CPulsar_ExecutionContext eContext, voi
     CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
     CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
 
-    int64_t x, y, w, h, color;
+    int64_t x, y, w, h;
+    Color color;
 
     size_t argIdx = 0;
     GET_INTEGER_NUMBER_ARG(x, argIdx++);
     GET_INTEGER_NUMBER_ARG(y, argIdx++);
     GET_INTEGER_NUMBER_ARG(w, argIdx++);
     GET_INTEGER_NUMBER_ARG(h, argIdx++);
-    GET_INTEGER_ARG(color, argIdx++);
+    GET_COLOR_ARG(color, argIdx++);
 
-    DrawRectangle((int)x, (int)y, (int)w, (int)h, GetColor((unsigned int)color));
+    DrawRectangle((int)x, (int)y, (int)w, (int)h, color);
 
     return CPulsar_RuntimeState_OK;
 }
@@ -192,16 +197,17 @@ CPulsar_RuntimeState Raylib_DrawText(CPulsar_ExecutionContext eContext, void* ar
     CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
 
     const char* text = NULL;
-    int64_t x, y, fontSize, color;
+    int64_t x, y, fontSize;
+    Color color;
 
     size_t argIdx = 0;
     GET_STRING_ARG(text, argIdx++);
     GET_INTEGER_NUMBER_ARG(x, argIdx++);
     GET_INTEGER_NUMBER_ARG(y, argIdx++);
     GET_INTEGER_NUMBER_ARG(fontSize, argIdx++);
-    GET_INTEGER_ARG(color, argIdx++);
+    GET_COLOR_ARG(color, argIdx++);
 
-    DrawText(text, (int)x, (int)y, (int)fontSize, GetColor((unsigned int)color));
+    DrawText(text, (int)x, (int)y, (int)fontSize, color);
 
     return CPulsar_RuntimeState_OK;
 }
@@ -250,3 +256,6 @@ CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext eContext, void
 
     return CPulsar_RuntimeState_OK;
 }
+
+int   _CPulsar_Value_IsColor(const CPulsar_Value self) { return CPulsar_Value_IsInteger(self); }
+Color _CPulsar_Value_AsColor(const CPulsar_Value self) { return GetColor((unsigned int)CPulsar_Value_AsInteger(self)); }
