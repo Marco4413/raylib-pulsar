@@ -96,7 +96,7 @@ CPulsar_RuntimeState Raylib_GetFrameTime(CPulsar_ExecutionContext eContext, void
     CPulsar_Stack stack = CPulsar_Frame_GetStack(frame);
 
     CPulsar_Value_SetDouble(
-            CPulsar_Stack_PushEmpty(stack),
+            CPulsar_Stack_Emplace(stack),
             (double)GetFrameTime());
 
     return CPulsar_RuntimeState_OK;
@@ -109,7 +109,7 @@ CPulsar_RuntimeState Raylib_WindowShouldClose(CPulsar_ExecutionContext eContext,
     CPulsar_Stack stack = CPulsar_Frame_GetStack(frame);
 
     CPulsar_Value_SetInteger(
-            CPulsar_Stack_PushEmpty(stack),
+            CPulsar_Stack_Emplace(stack),
             WindowShouldClose() ? 1 : 0);
 
     return CPulsar_RuntimeState_OK;
@@ -136,7 +136,7 @@ CPulsar_RuntimeState Raylib_GetScreenWidth(CPulsar_ExecutionContext eContext, vo
     CPulsar_Stack stack = CPulsar_Frame_GetStack(frame);
 
     CPulsar_Value_SetInteger(
-            CPulsar_Stack_PushEmpty(stack),
+            CPulsar_Stack_Emplace(stack),
             (int64_t)GetScreenWidth());
 
     return CPulsar_RuntimeState_OK;
@@ -149,7 +149,7 @@ CPulsar_RuntimeState Raylib_GetScreenHeight(CPulsar_ExecutionContext eContext, v
     CPulsar_Stack stack = CPulsar_Frame_GetStack(frame);
 
     CPulsar_Value_SetInteger(
-            CPulsar_Stack_PushEmpty(stack),
+            CPulsar_Stack_Emplace(stack),
             (int64_t)GetScreenHeight());
 
     return CPulsar_RuntimeState_OK;
@@ -227,7 +227,7 @@ CPulsar_RuntimeState Raylib_MeasureText(CPulsar_ExecutionContext eContext, void*
     GET_INTEGER_NUMBER_ARG(fontSize, argIdx++);
 
     CPulsar_Value_SetInteger(
-            CPulsar_Stack_PushEmpty(stack),
+            CPulsar_Stack_Emplace(stack),
             MeasureText(text, fontSize));
 
     return CPulsar_RuntimeState_OK;
@@ -251,7 +251,7 @@ CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext eContext, void
     GET_INTEGER_ARG(key, 0);
 
     CPulsar_Value_SetInteger(
-            CPulsar_Stack_PushEmpty(stack),
+            CPulsar_Stack_Emplace(stack),
             IsKeyPressed((int)key) ? 1 : 0);
 
     return CPulsar_RuntimeState_OK;
