@@ -4,7 +4,7 @@
 
 #define GET_ARG(typeCheckMethod, unwrapMethod, outVar, argIdx)                \
     do {                                                                      \
-        CPulsar_Value value = CPulsar_Locals_Get(locals, (argIdx));           \
+        const CPulsar_Value* value = CPulsar_Locals_Get(locals, (argIdx));    \
         if (!(typeCheckMethod)(value)) return CPulsar_RuntimeState_TypeError; \
         (outVar) = (unwrapMethod)(value);                                     \
     } while (0)
@@ -13,8 +13,8 @@
 #define GET_INTEGER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsInteger, CPulsar_Value_AsInteger, (outVar), (argIdx))
 #define GET_INTEGER_NUMBER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsNumber, CPulsar_Value_AsIntegerNumber, (outVar), (argIdx))
 
-int   _CPulsar_Value_IsColor(const CPulsar_Value self);
-Color _CPulsar_Value_AsColor(const CPulsar_Value self);
+int   _CPulsar_Value_IsColor(const CPulsar_Value* self);
+Color _CPulsar_Value_AsColor(const CPulsar_Value* self);
 #define GET_COLOR_ARG(outVar, argIdx) GET_ARG(_CPulsar_Value_IsColor, _CPulsar_Value_AsColor, (outVar), (argIdx))
 
 Raylib_Bindings Raylib_GetBindings()
@@ -56,11 +56,11 @@ Raylib_Bindings Raylib_GetBindings()
     };
 }
 
-CPulsar_RuntimeState Raylib_InitWindow(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_InitWindow(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
 
     const char* title = NULL;
     int64_t width, height;
@@ -75,11 +75,11 @@ CPulsar_RuntimeState Raylib_InitWindow(CPulsar_ExecutionContext eContext, void* 
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_SetTargetFPS(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_SetTargetFPS(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
 
     int64_t targetFPS;
     GET_INTEGER_ARG(targetFPS, 0);
@@ -89,11 +89,11 @@ CPulsar_RuntimeState Raylib_SetTargetFPS(CPulsar_ExecutionContext eContext, void
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_GetFrameTime(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_GetFrameTime(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame frame = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Stack stack = CPulsar_Frame_GetStack(frame);
+    CPulsar_Frame* frame = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Stack* stack = CPulsar_Frame_GetStack(frame);
 
     CPulsar_Value_SetDouble(
             CPulsar_Stack_Emplace(stack),
@@ -102,11 +102,11 @@ CPulsar_RuntimeState Raylib_GetFrameTime(CPulsar_ExecutionContext eContext, void
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_WindowShouldClose(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_WindowShouldClose(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame frame = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Stack stack = CPulsar_Frame_GetStack(frame);
+    CPulsar_Frame* frame = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Stack* stack = CPulsar_Frame_GetStack(frame);
 
     CPulsar_Value_SetInteger(
             CPulsar_Stack_Emplace(stack),
@@ -115,25 +115,25 @@ CPulsar_RuntimeState Raylib_WindowShouldClose(CPulsar_ExecutionContext eContext,
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_CloseWindow(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_CloseWindow(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args, (void)eContext;
     CloseWindow();
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_BeginDrawing(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_BeginDrawing(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args, (void)eContext;
     BeginDrawing();
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_GetScreenWidth(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_GetScreenWidth(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame frame = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Stack stack = CPulsar_Frame_GetStack(frame);
+    CPulsar_Frame* frame = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Stack* stack = CPulsar_Frame_GetStack(frame);
 
     CPulsar_Value_SetInteger(
             CPulsar_Stack_Emplace(stack),
@@ -142,11 +142,11 @@ CPulsar_RuntimeState Raylib_GetScreenWidth(CPulsar_ExecutionContext eContext, vo
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_GetScreenHeight(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_GetScreenHeight(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame frame = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Stack stack = CPulsar_Frame_GetStack(frame);
+    CPulsar_Frame* frame = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Stack* stack = CPulsar_Frame_GetStack(frame);
 
     CPulsar_Value_SetInteger(
             CPulsar_Stack_Emplace(stack),
@@ -155,11 +155,11 @@ CPulsar_RuntimeState Raylib_GetScreenHeight(CPulsar_ExecutionContext eContext, v
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_ClearBackground(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_ClearBackground(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
 
     Color color;
     GET_COLOR_ARG(color, 0);
@@ -169,11 +169,11 @@ CPulsar_RuntimeState Raylib_ClearBackground(CPulsar_ExecutionContext eContext, v
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_DrawRectangle(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_DrawRectangle(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
 
     int64_t x, y, w, h;
     Color color;
@@ -190,11 +190,11 @@ CPulsar_RuntimeState Raylib_DrawRectangle(CPulsar_ExecutionContext eContext, voi
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_DrawText(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_DrawText(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
 
     const char* text = NULL;
     int64_t x, y, fontSize;
@@ -212,12 +212,12 @@ CPulsar_RuntimeState Raylib_DrawText(CPulsar_ExecutionContext eContext, void* ar
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_MeasureText(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_MeasureText(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
-    CPulsar_Stack  stack  = CPulsar_Frame_GetStack(frame);
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Stack*  stack  = CPulsar_Frame_GetStack(frame);
 
     const char* text = NULL;
     int64_t fontSize;
@@ -233,19 +233,19 @@ CPulsar_RuntimeState Raylib_MeasureText(CPulsar_ExecutionContext eContext, void*
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_EndDrawing(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_EndDrawing(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args, (void)eContext;
     EndDrawing();
     return CPulsar_RuntimeState_OK;
 }
 
-CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext eContext, void* args)
+CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args;
-    CPulsar_Frame  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
-    CPulsar_Locals locals = CPulsar_Frame_GetLocals(frame);
-    CPulsar_Stack  stack  = CPulsar_Frame_GetStack(frame);
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Stack*  stack  = CPulsar_Frame_GetStack(frame);
 
     int64_t key;
     GET_INTEGER_ARG(key, 0);
@@ -257,5 +257,5 @@ CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext eContext, void
     return CPulsar_RuntimeState_OK;
 }
 
-int   _CPulsar_Value_IsColor(const CPulsar_Value self) { return CPulsar_Value_IsInteger(self); }
-Color _CPulsar_Value_AsColor(const CPulsar_Value self) { return GetColor((unsigned int)CPulsar_Value_AsInteger(self)); }
+int   _CPulsar_Value_IsColor(const CPulsar_Value* self) { return CPulsar_Value_IsInteger(self); }
+Color _CPulsar_Value_AsColor(const CPulsar_Value* self) { return GetColor((unsigned int)CPulsar_Value_AsInteger(self)); }
