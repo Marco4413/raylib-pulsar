@@ -3,12 +3,11 @@
 
 #include "bindings.h"
 
-// Returns the version of Pulsar this binding was made for
-CPULSAR_EXPORT uint64_t CPULSAR_CALL GetPulsarVersion(void)
+// Returns the version of CPulsar this binding was made for.
+CPULSAR_EXPORT uint64_t CPULSAR_CALL GetCPulsarVersion(void)
 {
-    // It is safe to return the CPulsar version we linked with since
-    //  these bindings don't depend on anything advanced.
-    return CPulsar_SemVer_ToNumber(CPulsar_GetLanguageVersion());
+    // Return the version of the CPulsar header files used at compile-time.
+    return CPULSAR_VERSION_NUMBER_CURRENT();
 }
 
 // No need to define this function if it's not used.
