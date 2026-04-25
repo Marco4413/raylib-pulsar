@@ -95,7 +95,7 @@ libs/cpulsar
 
 When all libraries are set up, you can use either the [`build-mingw.sh`](build-mingw.sh)
 or [`build-linux.sh`](build-linux.sh) scripts to build the project on your platform
-of choice. The output will be found at `build/raylibpulsar.dll` or `build/libraylibpulsar.so`.
+of choice. The output will be found at `build/raylib.cpulsar.windows.dll` or `build/raylib.cpulsar.linux.so`.
 
 > [!NOTE]
 > Refer to the scripts to see compiler flags.
@@ -106,9 +106,4 @@ of choice. The output will be found at `build/raylibpulsar.dll` or `build/libray
 > You must have followed the [Building](#building) section before being able to
 > run any example.
 
-Use either [`run-mingw.sh`](run-mingw.sh) or [`run-linux.sh`](run-linux.sh)
-depending on your platform and provide the example you want to run to the script.
-
-> [!NOTE]
-> The main difference between the two scripts is the name of the dynamic library
-> used. There may be a common extension for Pulsar native libraries in the future.
+Use [`run-example.sh`](run-example.sh) and provide the example you want to run to the script.

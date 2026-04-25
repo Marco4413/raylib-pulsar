@@ -14,7 +14,7 @@ gcc -std=c99 \
     -Iinclude              \
     -Ilibs/cpulsar/include \
     -Ilibs/raylib/include  \
-    -o build/raylibpulsar.dll \
+    -o build/raylib.cpulsar.windows.dll \
     src/main.c src/bindings.c \
     -Llibs/raylib/lib -Llibs/cpulsar \
     -l:libraylib.a    -l:cpulsar.dll \

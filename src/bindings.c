@@ -13,8 +13,8 @@
 #define GET_INTEGER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsInteger, CPulsar_Value_AsInteger, (outVar), (argIdx))
 #define GET_INTEGER_NUMBER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsNumber, CPulsar_Value_AsIntegerNumber, (outVar), (argIdx))
 
-int   _CPulsar_Value_IsColor(const CPulsar_Value* self);
-Color _CPulsar_Value_AsColor(const CPulsar_Value* self);
+static int   _CPulsar_Value_IsColor(const CPulsar_Value* self);
+static Color _CPulsar_Value_AsColor(const CPulsar_Value* self);
 #define GET_COLOR_ARG(outVar, argIdx) GET_ARG(_CPulsar_Value_IsColor, _CPulsar_Value_AsColor, (outVar), (argIdx))
 
 Raylib_Bindings Raylib_GetBindings()
@@ -257,5 +257,5 @@ CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext* eContext, voi
     return CPulsar_RuntimeState_OK;
 }
 
-int   _CPulsar_Value_IsColor(const CPulsar_Value* self) { return CPulsar_Value_IsInteger(self); }
-Color _CPulsar_Value_AsColor(const CPulsar_Value* self) { return GetColor((unsigned int)CPulsar_Value_AsInteger(self)); }
+static int   _CPulsar_Value_IsColor(const CPulsar_Value* self) { return CPulsar_Value_IsInteger(self); }
+static Color _CPulsar_Value_AsColor(const CPulsar_Value* self) { return GetColor((unsigned int)CPulsar_Value_AsInteger(self)); }
