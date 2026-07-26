@@ -1,4 +1,5 @@
 build
+dist
 
 # Ignore downloaded prebuilt binaries
 libs/*.zip
