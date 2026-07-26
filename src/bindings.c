@@ -13,7 +13,7 @@
 #define GET_INTEGER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsInteger, CPulsar_Value_AsInteger, (outVar), (argIdx))
 #define GET_INTEGER_NUMBER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsNumber, CPulsar_Value_AsIntegerNumber, (outVar), (argIdx))
 
-static int   _CPulsar_Value_IsColor(const CPulsar_Value* self);
+static bool  _CPulsar_Value_IsColor(const CPulsar_Value* self);
 static Color _CPulsar_Value_AsColor(const CPulsar_Value* self);
 #define GET_COLOR_ARG(outVar, argIdx) GET_ARG(_CPulsar_Value_IsColor, _CPulsar_Value_AsColor, (outVar), (argIdx))
 
@@ -257,5 +257,5 @@ CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext* eContext, voi
     return CPulsar_RuntimeState_OK;
 }
 
-static int   _CPulsar_Value_IsColor(const CPulsar_Value* self) { return CPulsar_Value_IsInteger(self); }
+static bool  _CPulsar_Value_IsColor(const CPulsar_Value* self) { return CPulsar_Value_IsInteger(self); }
 static Color _CPulsar_Value_AsColor(const CPulsar_Value* self) { return GetColor((unsigned int)CPulsar_Value_AsInteger(self)); }

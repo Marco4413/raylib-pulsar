@@ -16,9 +16,9 @@ CPULSAR_EXPORT uint64_t CPULSAR_CALL PulsarExt_GetCPulsarVersion(void)
 //     (void)module;
 // }
 
-CPULSAR_EXPORT void CPULSAR_CALL PulsarExt_BindFunctions(CPulsar_Module* module, int declareAndBind)
+CPULSAR_EXPORT void CPULSAR_CALL PulsarExt_BindFunctions(CPulsar_Module* module, bool declareAndBind)
 {
-    Raylib_Bindings bindings = Raylib_GetBindings(); 
+    Raylib_Bindings bindings = Raylib_GetBindings();
     for (size_t i = 0; i < bindings.Count; ++i) {
         CPulsar_Module_BindNativeFunctionEx(
             module,
