@@ -20,6 +20,8 @@
 #define GET_INTEGER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsInteger, CPulsar_Value_AsInteger, (outVar), (argIdx))
 #define GET_INTEGER_NUMBER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsNumber, CPulsar_Value_AsIntegerNumber, (outVar), (argIdx))
 
+#define GET_DOUBLE_NUMBER_ARG(outVar, argIdx) GET_ARG(CPulsar_Value_IsNumber, CPulsar_Value_AsDoubleNumber, (outVar), (argIdx))
+
 static bool  _CPulsar_Value_IsColor(const CPulsar_Value* self);
 static Color _CPulsar_Value_AsColor(const CPulsar_Value* self);
 #define GET_COLOR_ARG(outVar, argIdx) GET_ARG(_CPulsar_Value_IsColor, _CPulsar_Value_AsColor, (outVar), (argIdx))
@@ -121,6 +123,14 @@ Raylib_Bindings Raylib_GetBindings()
           .Function  = Raylib_IsKeyPressed,
           .UsesArgs  = false,
           },
+        { .Signature = { .Name = "raylib/get-directory-path",   .Arity = 1, .Returns = 1 },
+          .Function  = Raylib_GetDirectoryPath,
+          .UsesArgs  = false,
+          },
+        { .Signature = { .Name = "raylib/change-directory",     .Arity = 1, .Returns = 1 },
+          .Function  = Raylib_ChangeDirectory,
+          .UsesArgs  = false,
+          },
         { .Signature = { .Name = "raylib/init-audio-device!",   .Arity = 0, .Returns = 0 },
           .Function  = Raylib_InitAudioDevice,
           .UsesArgs  = false,
@@ -135,6 +145,10 @@ Raylib_Bindings Raylib_GetBindings()
           },
         { .Signature = { .Name = "raylib/unload-sound!",        .Arity = 1, .Returns = 0 },
           .Function  = (CPulsar_NativeFunction)Raylib_UnloadSound,
+          .UsesArgs  = true,
+          },
+        { .Signature = { .Name = "raylib/set-sound-volume!",    .Arity = 2, .Returns = 0 },
+          .Function  = (CPulsar_NativeFunction)Raylib_SetSoundVolume,
           .UsesArgs  = true,
           },
         { .Signature = { .Name = "raylib/play-sound!",          .Arity = 1, .Returns = 0 },
@@ -350,6 +364,37 @@ CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext* eContext, voi
     return CPulsar_RuntimeState_OK;
 }
 
+CPulsar_RuntimeState Raylib_GetDirectoryPath(CPulsar_ExecutionContext* eContext, void* args)
+{
+    (void)args;
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Stack*  stack  = CPulsar_Frame_GetStack(frame);
+
+    const char* filePath = NULL;
+    GET_STRING_ARG(filePath, 0);
+
+    CPulsar_Value_SetString(CPulsar_Stack_Emplace(stack), GetDirectoryPath(filePath));
+
+    return CPulsar_RuntimeState_OK;
+}
+
+CPulsar_RuntimeState Raylib_ChangeDirectory(CPulsar_ExecutionContext* eContext, void* args)
+{
+    (void)args;
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
+    CPulsar_Stack*  stack  = CPulsar_Frame_GetStack(frame);
+
+    const char* directory = NULL;
+    GET_STRING_ARG(directory, 0);
+
+    ChangeDirectory(directory);
+    CPulsar_Value_SetInteger(CPulsar_Stack_Emplace(stack), 1);
+
+    return CPulsar_RuntimeState_OK;
+}
+
 CPulsar_RuntimeState Raylib_InitAudioDevice(CPulsar_ExecutionContext* eContext, void* args)
 {
     (void)args, (void)eContext;
@@ -419,6 +464,20 @@ CPulsar_RuntimeState Raylib_UnloadSound(CPulsar_ExecutionContext* eContext, Rayl
     Raylib_Sound* sound = NULL;
     GET_SOUND_ARG(sound, 0, args);
     _UnloadSound(sound);
+
+    return CPulsar_RuntimeState_OK;
+}
+
+CPulsar_RuntimeState Raylib_SetSoundVolume(CPulsar_ExecutionContext* eContext, Raylib_Binding_Args* args)
+{
+    CPulsar_Frame*  frame  = CPulsar_ExecutionContext_CurrentFrame(eContext);
+    CPulsar_Locals* locals = CPulsar_Frame_GetLocals(frame);
+
+    Raylib_Sound* sound = NULL;
+    double volume = 1.0;
+    GET_SOUND_ARG(sound, 0, args);
+    GET_DOUBLE_NUMBER_ARG(volume, 1);
+    SetSoundVolume(sound->S, (float)volume);
 
     return CPulsar_RuntimeState_OK;
 }

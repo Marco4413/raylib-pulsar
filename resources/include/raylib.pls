@@ -15,10 +15,14 @@
 
 *(*raylib/is-key-pressed? key) -> 1.
 
+*(*raylib/get-directory-path file-path) -> 1.
+*(*raylib/change-directory dir) -> 1.
+
 *(*raylib/init-audio-device!).
 *(*raylib/close-audio-device!).
-*(*raylib/load-sound soundPath) -> 1.
+*(*raylib/load-sound sound-path) -> 1.
 *(*raylib/unload-sound! sound).
+*(*raylib/set-sound-volume! sound volume).
 *(*raylib/play-sound! sound).
 
 // Taken from https://github.com/raysan5/raylib/blob/c1ab645ca298a2801097931d1079b10ff7eb9df8/src/raylib.h#L573

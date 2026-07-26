@@ -24,12 +24,16 @@ CPulsar_RuntimeState Raylib_EndDrawing(CPulsar_ExecutionContext* eContext, void*
 
 CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext* eContext, void* args);
 
+CPulsar_RuntimeState Raylib_GetDirectoryPath(CPulsar_ExecutionContext* eContext, void* args);
+CPulsar_RuntimeState Raylib_ChangeDirectory(CPulsar_ExecutionContext* eContext, void* args);
+
 CPulsar_RuntimeState Raylib_InitAudioDevice(CPulsar_ExecutionContext* eContext, void* args);
 CPulsar_RuntimeState Raylib_CloseAudioDevice(CPulsar_ExecutionContext* eContext, void* args);
 
 typedef struct Raylib_Sound Raylib_Sound;
 CPulsar_RuntimeState Raylib_LoadSound(CPulsar_ExecutionContext* eContext, Raylib_Binding_Args* args);
 CPulsar_RuntimeState Raylib_UnloadSound(CPulsar_ExecutionContext* eContext, Raylib_Binding_Args* args);
+CPulsar_RuntimeState Raylib_SetSoundVolume(CPulsar_ExecutionContext* eContext, Raylib_Binding_Args* args);
 CPulsar_RuntimeState Raylib_PlaySound(CPulsar_ExecutionContext* eContext, Raylib_Binding_Args* args);
 
 typedef struct {
