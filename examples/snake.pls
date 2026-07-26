@@ -32,10 +32,11 @@ global [0, 1]               -> snake/next-direction
 global snake/next-direction -> snake/direction
 
 // The last element is the closest to the head
-global []     -> snake/tail
-global [0, 0] -> snake/head
-global 1      -> snake/growth
-global [3, 3] -> snake/food
+global []       -> snake/tail
+global [0, 0]   -> snake/head
+global 1        -> snake/growth
+global [3, 3]   -> snake/food
+global const 10 -> snake/food/spawn-attempts
 
 /* --- END --- */
 
@@ -205,7 +206,7 @@ global 1 -> random/seed
   1 thickness - game/cell-size * 2.0 /
     <-> pad-x
      -> pad-y
-  
+
   <- path
     (!empty?) if: .
     (!head) <-> last-pos
@@ -270,10 +271,22 @@ global 1 -> random/seed
   [3, 3] -> snake/food
   .
 
+*(snake/intersects? v) -> 1:
+  snake/head v (vec2/equals?) if: 1 .
+  snake/tail while: (!empty?) if: break
+    (!head) v (vec2/equals?) if: 1 .
+  end
+  0
+  .
+
 *(snake/food/regen!):
-  (random/int) (abs) (game/world/width)  %
-  (random/int) (abs) (game/world/height) %
-    (!pack 2) -> snake/food
+  0 -> i; while i < snake/food/spawn-attempts:
+    (random/int) (abs) (game/world/width)  %
+    (random/int) (abs) (game/world/height) %
+      (!pack 2) -> snake/food
+    snake/food (snake/intersects?) if not: break
+    i 1 + -> i
+  end
   .
 
 *(snake/can-eat?) -> 1:
