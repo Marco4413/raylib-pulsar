@@ -3,6 +3,10 @@
 
 #include <cpulsar/runtime.h>
 
+typedef struct {
+    uint64_t SoundTypeId;
+} Raylib_Binding_Args;
+
 CPulsar_RuntimeState Raylib_InitWindow(CPulsar_ExecutionContext* eContext, void* args);
 CPulsar_RuntimeState Raylib_SetTargetFPS(CPulsar_ExecutionContext* eContext, void* args);
 CPulsar_RuntimeState Raylib_GetFrameTime(CPulsar_ExecutionContext* eContext, void* args);
@@ -20,9 +24,27 @@ CPulsar_RuntimeState Raylib_EndDrawing(CPulsar_ExecutionContext* eContext, void*
 
 CPulsar_RuntimeState Raylib_IsKeyPressed(CPulsar_ExecutionContext* eContext, void* args);
 
+CPulsar_RuntimeState Raylib_InitAudioDevice(CPulsar_ExecutionContext* eContext, void* args);
+CPulsar_RuntimeState Raylib_CloseAudioDevice(CPulsar_ExecutionContext* eContext, void* args);
+
+typedef struct Raylib_Sound Raylib_Sound;
+CPulsar_RuntimeState Raylib_LoadSound(CPulsar_ExecutionContext* eContext, Raylib_Binding_Args* args);
+CPulsar_RuntimeState Raylib_UnloadSound(CPulsar_ExecutionContext* eContext, Raylib_Binding_Args* args);
+CPulsar_RuntimeState Raylib_PlaySound(CPulsar_ExecutionContext* eContext, Raylib_Binding_Args* args);
+
+typedef struct {
+    const char* Name;
+} Raylib_CustomType;
+
+typedef struct {
+    const Raylib_CustomType* Items;
+    size_t Count;
+} Raylib_CustomTypes;
+
 typedef struct {
     CPulsar_FunctionSignature Signature;
     CPulsar_NativeFunction Function;
+    bool UsesArgs;
 } Raylib_Binding;
 
 typedef struct {
@@ -30,6 +52,10 @@ typedef struct {
     size_t Count;
 } Raylib_Bindings;
 
+Raylib_Binding_Args Raylib_GetBindingArgs(const CPulsar_Module* module);
+CPulsar_CBuffer Raylib_BindingArgs_ToCBuffer(Raylib_Binding_Args args);
+
+Raylib_CustomTypes Raylib_GetCustomTypes();
 Raylib_Bindings Raylib_GetBindings();
 
 #endif // _RAYLIB_PULSAR_BINDINGS_H
