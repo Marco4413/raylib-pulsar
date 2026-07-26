@@ -21,6 +21,11 @@ mkdir -p "$APPDIR"
 mkdir -p "$APPDIR/bin"
 mkdir -p "$APPDIR/libs"
 
+ASSETS_FOLDER="$( dirname "$1" )/assets"
+if [ -d "$ASSETS_FOLDER" ]; then
+    cp -R "$ASSETS_FOLDER" "$APPDIR/"
+fi
+
 cp ./libs/cpulsar/pulsar-tools     "$APPDIR/bin"
 cp ./libs/cpulsar/libcpulsar.so    "$APPDIR/bin"
 cp ./build/raylib.cpulsar.linux.so "$APPDIR/libs"
@@ -29,6 +34,9 @@ cp ./README.md  "$APPDIR"
 
 cat > "$APPDIR/AppRun" << 'AppRun'
 #!/usr/bin/sh
+
+set -xe
+
 HERE="$(dirname "$(readlink -f "$0")")"
 "$HERE/bin/pulsar-tools" run -lraylib "-L$HERE/libs" "$HERE/app.ntx"
 AppRun
