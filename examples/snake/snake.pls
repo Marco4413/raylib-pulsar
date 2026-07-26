@@ -69,6 +69,9 @@ global const 0xC0C0C0FF-> game/font-color
 
 global const 72 -> game/target-fps
 
+global const -> Void: 0 local x: <- x x end .
+global Void -> sound/eat
+
 global 1 -> random/seed
 // Xorshift 64bit RNG
 *(random/int) -> 1:
@@ -312,6 +315,7 @@ global 1 -> random/seed
 
   (snake/can-eat?) if:
     snake/growth 1 + -> snake/growth
+    sound/eat (*raylib/play-sound!)
     (snake/food/regen!)
   end
 
@@ -503,14 +507,30 @@ global 1 -> random/seed
 
 *(main args):
   800 600 "Snake Game" (*raylib/init-window!)
+  (*raylib/init-audio-device!)
+
+  <- args (!head) local path:
+    <- path (*raylib/get-directory-path)
+      (*raylib/change-directory)
+      (!pop)
+  end
+
+  "assets/audio/eat.wav" (*raylib/load-sound) -> sound/eat
+  sound/eat 0.25 (*raylib/set-sound-volume!)
+
   game/target-fps if > 0:
     game/target-fps (*raylib/set-target-fps!)
   end
+
   while: (*raylib/window-should-close?) if: break
     (*raylib/begin-drawing!)
       (game/update!)
       (game/render!)
     (*raylib/end-drawing!)
   end
+
+  <- sound/eat (*raylib/unload-sound!)
+
+  (*raylib/close-audio-device!)
   (*raylib/close-window!)
   .
