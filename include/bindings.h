@@ -48,7 +48,6 @@ typedef struct {
 typedef struct {
     CPulsar_FunctionSignature Signature;
     CPulsar_NativeFunction Function;
-    bool UsesArgs;
 } Raylib_Binding;
 
 typedef struct {

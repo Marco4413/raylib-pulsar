@@ -22,7 +22,8 @@ CPULSAR_EXPORT void CPULSAR_CALL PulsarExt_BindTypes(CPulsar_Module* module)
 
 CPULSAR_EXPORT void CPULSAR_CALL PulsarExt_BindFunctions(CPulsar_Module* module, bool declareAndBind)
 {
-    Raylib_Binding_Args args = Raylib_GetBindingArgs(module);
+    CPulsar_CBuffer_Ref* args = CPulsar_CBuffer_Ref_Create(
+        Raylib_BindingArgs_ToCBuffer(Raylib_GetBindingArgs(module)));
     Raylib_Bindings bindings = Raylib_GetBindings();
     for (size_t i = 0; i < bindings.Count; ++i) {
         Raylib_Binding binding = bindings.Items[i];
@@ -30,10 +31,9 @@ CPULSAR_EXPORT void CPULSAR_CALL PulsarExt_BindFunctions(CPulsar_Module* module,
             module,
             binding.Signature,
             binding.Function,
-            binding.UsesArgs
-                ? Raylib_BindingArgs_ToCBuffer(args)
-                : CPULSAR_CBUFFER_NULL,
+            args,
             declareAndBind
         );
     }
+    CPulsar_CBuffer_Ref_Delete(args);
 }
