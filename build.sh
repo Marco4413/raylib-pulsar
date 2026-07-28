@@ -4,9 +4,11 @@ set -xe
 
 if [ ! -d build ]; then mkdir build; fi
 
+CC="${CC:-cc}"
+
 CFLAGS="
+  $CFLAGS
   -std=c99
-  -ggdb
   -Wall -Wextra
   -Wpedantic -Werror
   -shared -fPIC
@@ -14,7 +16,7 @@ CFLAGS="
   -DCPULSAR_SHAREDLIB
   -Iinclude"
 
-LDDFLAGS=''
+LDDFLAGS="$LDDFLAGS"
 
 if [ "$OSTYPE" = 'cygwin' -o "$OSTYPE" = 'msys' ]; then
   # Windows
@@ -43,4 +45,4 @@ else
     -l:libcpulsar.so"
 fi
 
-gcc $CFLAGS src/main.c src/bindings.c $LDDFLAGS
+"$CC" $CFLAGS src/main.c src/bindings.c $LDDFLAGS
