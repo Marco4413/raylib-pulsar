@@ -1,3 +1,8 @@
 [*.{pls,pls,md}]
 indent_size = 2
 indent_style = space
+
+[*.sh]
+end_of_line = lf
+indent_size = 2
+indent_style = space

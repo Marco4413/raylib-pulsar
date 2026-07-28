@@ -29,7 +29,8 @@ from scratch. Therefore, manual setup is needed before being able to build.
 
 Download the [release of Raylib](https://github.com/raysan5/raylib/releases/tag/5.5)
 which suits your platform (or build it yourself) and extract all files into the
-[libs/raylib](libs/raylib) directory.
+[libs/raylib-5.5_win64_mingw](libs/raylib-5.5_win64_mingw) directory on Windows or
+the [libs/raylib-5.5_linux_amd64](libs/raylib-5.5_linux_amd64) directory on Linux.
 
 The only files required are the static library file (`libraylib.a`) and the main
 header file (`raylib.h`).
@@ -42,7 +43,7 @@ header file (`raylib.h`).
 Example minimal directory structure (for MinGW build):
 
 ```bash
-libs/raylib
+libs/raylib-5.5_win64_mingw
 ├── LICENSE
 ├── include
 │   └── raylib.h
@@ -59,25 +60,30 @@ You need all [CPulsar header files](https://github.com/Marco4413/Pulsar/tree/fea
 a built dynamic library of CPulsar (`libcpulsar.so` on Linux or `cpulsar.dll`
 on Windows), and optionally `pulsar-tools` to run the examples.
 
+Extract all files into the [libs/pulsar-windows_x86_64](libs/pulsar-windows_x86_64)
+directory on Windows or the [libs/pulsar-linux_x86_64](libs/pulsar-linux_x86_64)
+directory on Linux.
+
 > [!IMPORTANT]
 > Make sure to either build or download prebuilt binaries from the correct branch
 > of Pulsar ([`feature/pulsar-tools/ext-bindings`](https://github.com/Marco4413/Pulsar/tree/feature/pulsar-tools/ext-bindings)).
 
 > [!IMPORTANT]
-> If you plan on using the bundled script files to build the project, make sure
+> If you plan on using the bundled script file to build the project, make sure
 > that, if you're building Pulsar yourself, the file structure follows the one
 > used by Pulsar artifacts.
 
 Example minimal directory structure (for MinGW build):
 
 ```bash
-libs/cpulsar
+libs/pulsar-windows_x86_64
 ├── LICENSE.md
 ├── cpulsar.dll
 ├── include
 │   └── cpulsar
 │       ├── cbuffer.h
 │       ├── core.h
+│       ├── opaque.h
 │       ├── parser.h
 │       ├── platform.h
 │       ├── runtime
@@ -93,12 +99,12 @@ libs/cpulsar
 
 ---
 
-When all libraries are set up, you can use either the [`build-mingw.sh`](build-mingw.sh)
-or [`build-linux.sh`](build-linux.sh) scripts to build the project on your platform
-of choice. The output will be found at `build/raylib.cpulsar.windows.dll` or `build/raylib.cpulsar.linux.so`.
+When all libraries are set up, you can use the [`build.sh`](build.sh)
+script to build the project. The output will be found at
+`build/raylib.cpulsar.windows.dll` or `build/raylib.cpulsar.linux.so`.
 
 > [!NOTE]
-> Refer to the scripts to see compiler flags.
+> Refer to the script to see compiler flags.
 
 ## Running Examples
 

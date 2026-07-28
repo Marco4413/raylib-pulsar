@@ -3,11 +3,12 @@
 set -xe
 
 if [ "$#" -lt 1 ]; then
-    echo 'No input provided.'
-    exit 1
+  echo 'No input provided.'
+  exit 1
 fi
 
 ARCH='x86_64'
+PULSAR_DIR="./libs/pulsar-linux_$ARCH"
 
 APPIMAGETOOL="./dist/appimagetool-$ARCH.AppImage"
 APPNAME="$(basename "$1" | sed -E 's/^(.*)\.[^.]*$/\1/')"
@@ -16,18 +17,18 @@ APPOUT="dist/$APPNAME-$ARCH.AppImage"
 
 mkdir -p "$APPDIR"
 
-./libs/cpulsar/pulsar-tools compile --no-debug --optimize-all "-o$APPDIR/app.ntx" -Iresources/include "$1"
+"$PULSAR_DIR/pulsar-tools" compile --no-debug --optimize-all "-o$APPDIR/app.ntx" -Iresources/include "$1"
 
 mkdir -p "$APPDIR/bin"
 mkdir -p "$APPDIR/libs"
 
 ASSETS_FOLDER="$( dirname "$1" )/assets"
 if [ -d "$ASSETS_FOLDER" ]; then
-    cp -R "$ASSETS_FOLDER" "$APPDIR/"
+  cp -R "$ASSETS_FOLDER" "$APPDIR/"
 fi
 
-cp ./libs/cpulsar/pulsar-tools     "$APPDIR/bin"
-cp ./libs/cpulsar/libcpulsar.so    "$APPDIR/bin"
+cp "$PULSAR_DIR/pulsar-tools"      "$APPDIR/bin"
+cp "$PULSAR_DIR/libcpulsar.so"     "$APPDIR/bin"
 cp ./build/raylib.cpulsar.linux.so "$APPDIR/libs"
 cp ./LICENSE.md "$APPDIR"
 cp ./README.md  "$APPDIR"
