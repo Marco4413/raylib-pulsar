@@ -52,7 +52,7 @@ CPulsar_CBuffer Raylib_BindingArgs_ToCBuffer(Raylib_Binding_Args args)
     return buffer;
 }
 
-Raylib_CustomTypes Raylib_GetCustomTypes()
+Raylib_CustomTypes Raylib_GetCustomTypes(void)
 {
     static Raylib_CustomType TYPES[] = {
         { "Raylib/Sound" },
@@ -64,7 +64,7 @@ Raylib_CustomTypes Raylib_GetCustomTypes()
     };
 }
 
-Raylib_Bindings Raylib_GetBindings()
+Raylib_Bindings Raylib_GetBindings(void)
 {
     static const Raylib_Binding BINDINGS[] = {
         { .Signature = { .Name = "raylib/init-window!",         .Arity = 3, .Returns = 0 },

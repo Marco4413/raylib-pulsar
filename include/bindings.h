@@ -58,7 +58,7 @@ typedef struct {
 Raylib_Binding_Args Raylib_GetBindingArgs(const CPulsar_Module* module);
 CPulsar_CBuffer Raylib_BindingArgs_ToCBuffer(Raylib_Binding_Args args);
 
-Raylib_CustomTypes Raylib_GetCustomTypes();
-Raylib_Bindings Raylib_GetBindings();
+Raylib_CustomTypes Raylib_GetCustomTypes(void);
+Raylib_Bindings Raylib_GetBindings(void);
 
 #endif // _RAYLIB_PULSAR_BINDINGS_H
