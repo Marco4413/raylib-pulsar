@@ -2,11 +2,7 @@
 
 > [!NOTE]
 > This project is used as an example on how to implement custom bindings for
-> Pulsar written in C.
-
-> [!IMPORTANT]
-> This project is based on the experimental [`feature/pulsar-tools/ext-bindings`](https://github.com/Marco4413/Pulsar/tree/feature/pulsar-tools/ext-bindings)
-> branch of [Pulsar](https://github.com/Marco4413/Pulsar).
+> [Pulsar](https://github.com/Marco4413/Pulsar) written in C.
 
 ## Project Structure
 
@@ -53,8 +49,10 @@ libs/raylib-5.5_win64_mingw
 
 ### Pulsar Setup
 
-Currently there is no official release of Pulsar, so the only way to get prebuilt
-binaries is through [GitHub Actions](https://github.com/Marco4413/Pulsar/actions/workflows/build.yaml).
+There are a few ways to get Pulsar binaries:
+- [Building it yourself](https://github.com/Marco4413/Pulsar#building).
+- From the [Build GitHub Action](https://github.com/Marco4413/Pulsar/actions/workflows/build.yaml) artifacts.
+- From [GitHub Releases](https://github.com/Marco4413/Pulsar/releases).
 
 You need all [CPulsar header files](https://github.com/Marco4413/Pulsar/tree/feature/pulsar-tools/ext-bindings/include/cpulsar),
 a built dynamic library of CPulsar (`libcpulsar.so` on Linux or `cpulsar.dll`
@@ -63,10 +61,6 @@ on Windows), and optionally `pulsar-tools` to run the examples.
 Extract all files into the [libs/pulsar-windows_x86_64](libs/pulsar-windows_x86_64)
 directory on Windows or the [libs/pulsar-linux_x86_64](libs/pulsar-linux_x86_64)
 directory on Linux.
-
-> [!IMPORTANT]
-> Make sure to either build or download prebuilt binaries from the correct branch
-> of Pulsar ([`feature/pulsar-tools/ext-bindings`](https://github.com/Marco4413/Pulsar/tree/feature/pulsar-tools/ext-bindings)).
 
 > [!IMPORTANT]
 > If you plan on using the bundled script file to build the project, make sure
