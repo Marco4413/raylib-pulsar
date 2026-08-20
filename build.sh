@@ -23,7 +23,7 @@ if [ "$OSTYPE" = 'cygwin' -o "$OSTYPE" = 'msys' ]; then
   CFLAGS="
     $CFLAGS
     -Ilibs/pulsar-windows_x86_64/include
-    -Ilibs/raylib-5.5_linux_amd64/include
+    -Ilibs/raylib-5.5_win64_mingw/include
     -o build/raylib.cpulsar.windows.dll"
   LDDFLAGS="
     $LDDFLAGS
